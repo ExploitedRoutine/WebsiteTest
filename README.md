@@ -5,7 +5,7 @@ This repository contains a static, German-language annuity loan calculator. All 
 ## Status
 
 - Production calculation logic runs entirely in the browser
-- No runtime or development dependencies beyond Node.js for tests and syntax checks
+- No runtime dependencies; development dependencies provide ESLint, Stylelint, and Node.js tests
 - Automated checks use the built-in Node.js test runner
 - GitHub Actions workflows support quality checks and GitHub Pages deployment
 - The site is served directly from `index.html` and `assets/`; no bundling is required
@@ -21,14 +21,14 @@ This repository contains a static, German-language annuity loan calculator. All 
 
 ## Quick start
 
-Requires Node.js 20 or newer.
+Requires Node.js 20.19+, 22.13+, or 24+.
 
 ```sh
 npm ci
 npm run check
 ```
 
-`npm run check` validates the browser JavaScript syntax and runs the test suite. Tests cover standard amortization, zero-interest loans, extra repayments, follow-up financing, and duration formatting.
+`npm run check` runs ESLint and Stylelint, validates the browser JavaScript syntax, and runs the test suite. Tests cover standard amortization, zero-interest loans, extra repayments, follow-up financing, and duration formatting.
 
 ## Run locally
 
@@ -63,6 +63,8 @@ The result is a simplified estimate, not financial or investment advice. Fees, a
   workflows/
     quality.yml
     pages.yml
+eslint.config.js
+stylelint.config.mjs
 assets/
   css/styles.css
   js/app.js
