@@ -2,7 +2,7 @@
   "name": "annuitaetendarlehen-rechner",
   "version": "1.0.0",
   "private": true,
-  "description": "Browserbasierter Rechner für Annuitätendarlehen",
+  "description": "Browserbasierter Annuitätendarlehen-Rechner mit automatisierten Tests und GitHub Pages-Deployment",
   "type": "module",
   "engines": {
     "node": ">=20"
