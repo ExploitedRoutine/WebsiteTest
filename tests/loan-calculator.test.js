@@ -51,10 +51,10 @@ test("handles a zero-interest loan", () => {
 test("rejects a scheduled payment that does not cover monthly interest", () => {
   assert.throws(() => calculateLoan({
     ...defaultLoan,
-    principal: 1,
+    principal: 30_000_000,
     annualInterestRate: 0.12,
-    initialRepaymentRate: 0.005,
-  }));
+    initialRepaymentRate: 0,
+  }), /Die Rate muss höher als die monatlichen Zinsen sein/);
 });
 
 test("annual extra repayments reduce payoff time and interest", () => {
@@ -68,6 +68,21 @@ test("annual extra repayments reduce payoff time and interest", () => {
   assert.ok(withExtraRepayment.totalInterest < withoutExtraRepayment.totalInterest);
 });
 
+test("pauses annual extra repayments only during the selected calendar years", () => {
+  const result = calculateLoan({
+    ...defaultLoan,
+    annualExtraRepaymentRate: 0.05,
+    pauseExtraRepayment: true,
+    pauseFromYear: 2027,
+    pauseToYear: 2027,
+  });
+
+  assert.equal(result.months[11].paymentDate.getFullYear(), 2027);
+  assert.equal(result.months[11].extraRepayment, 0);
+  assert.equal(result.months[23].paymentDate.getFullYear(), 2028);
+  assert.ok(result.months[23].extraRepayment > 0);
+});
+
 test("applies the follow-up rate after the fixed-rate period", () => {
   const result = calculateLoan({
     ...defaultLoan,
@@ -78,6 +93,39 @@ test("applies the follow-up rate after the fixed-rate period", () => {
 
   assert.equal(result.refinancingBalance, result.months[119].balance);
   assert.notEqual(result.months[120].payment, result.initialScheduledPayment);
+});
+
+test("applies follow-up extra repayments after refinancing and honors their pause period", () => {
+  const result = calculateLoan({
+    ...defaultLoan,
+    refinancingEnabled: true,
+    fixedRateMonths: 12,
+    followUpExtraRepaymentRate: 0.05,
+    pauseFollowUpExtraRepayment: true,
+    followUpPauseFromYear: 2028,
+    followUpPauseToYear: 2028,
+  });
+
+  assert.equal(result.months[11].extraRepayment, 0);
+  assert.equal(result.months[23].paymentDate.getFullYear(), 2028);
+  assert.equal(result.months[23].extraRepayment, 0);
+  assert.equal(result.months[35].paymentDate.getFullYear(), 2029);
+  assert.equal(result.months[35].extraRepayment, result.followUpAnnualExtraRepayment);
+});
+
+test("does not start follow-up payments when the loan is paid off at the fixed-rate boundary", () => {
+  const result = calculateLoan({
+    ...defaultLoan,
+    principal: 120_000,
+    annualInterestRate: 0,
+    initialRepaymentRate: 1,
+    refinancingEnabled: true,
+    fixedRateMonths: 12,
+  });
+
+  assert.equal(result.months.length, 12);
+  assert.equal(result.months.at(-1).balance, 0);
+  assert.equal(result.refinancingBalance, 0);
 });
 
 test("formats durations as localized German labels", () => {
