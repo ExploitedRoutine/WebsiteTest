@@ -27,7 +27,7 @@ Die Tests nutzen den integrierten Node.js-Test-Runner; das Projekt hat keine Lau
 
 ## Veröffentlichen
 
-Das Repository kann direkt als statische Website veröffentlicht werden. Der Webserver muss `index.html` aus dem Projektstamm sowie die Verzeichnisse `assets/` ausliefern. Es gibt keinen Build-Schritt und keine serverseitigen Anforderungen. Vor dem Veröffentlichen die Tests ausführen und die Seite auf dem Zielhost prüfen.
+Pushes auf `main` führen die Prüfungen aus und veröffentlichen die statische Website automatisch mit GitHub Actions auf [GitHub Pages](https://exploitedroutine.github.io/WebsiteTest/). Veröffentlicht werden `index.html` und `assets/`; ein Build-Schritt ist nicht erforderlich. Der Workflow kann außerdem über GitHub Actions manuell gestartet werden.
 
 ## Berechnungsmodell und Hinweise
 
