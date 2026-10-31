@@ -27,7 +27,7 @@ Die Tests nutzen den integrierten Node.js-Test-Runner; das Projekt hat keine Lau
 
 ## Veröffentlichen
 
-Pushes auf `main` führen die Prüfungen aus und veröffentlichen die statische Website automatisch mit GitHub Actions auf [GitHub Pages](https://exploitedroutine.github.io/WebsiteTest/). Veröffentlicht werden `index.html` und `assets/`; ein Build-Schritt ist nicht erforderlich. Der Workflow kann außerdem über GitHub Actions manuell gestartet werden.
+Für die erste Veröffentlichung unter **Settings > Pages > Build and deployment** als Quelle **GitHub Actions** auswählen. Danach führen Pushes auf `main` die Prüfungen aus und veröffentlichen die statische Website automatisch auf [GitHub Pages](https://exploitedroutine.github.io/WebsiteTest/). Veröffentlicht werden `index.html` und `assets/`; ein Build-Schritt ist nicht erforderlich. Der Workflow kann außerdem über GitHub Actions manuell gestartet werden.
 
 ## Berechnungsmodell und Hinweise
 
